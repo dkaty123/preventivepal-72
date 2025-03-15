@@ -1,6 +1,5 @@
-
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,6 +12,8 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const defaultTab = searchParams.get("tab") || "login";
 
   // Login form state
   const [loginEmail, setLoginEmail] = useState("");
@@ -33,6 +34,9 @@ const Login = () => {
       setIsLoading(false);
       // Demo login - in a real app, you would validate credentials with a backend
       if (loginEmail && loginPassword) {
+        // Set auth state in localStorage
+        localStorage.setItem("auth", "true");
+        
         toast({
           title: "Login successful",
           description: "Welcome back to PreventivePal!",
@@ -45,7 +49,7 @@ const Login = () => {
           description: "Please check your credentials and try again.",
         });
       }
-    }, 1500);
+    }, 1000);
   };
 
   const handleRegister = async (e: React.FormEvent) => {
@@ -67,10 +71,14 @@ const Login = () => {
       
       // Demo registration - in a real app, you would send data to a backend
       if (registerName && registerEmail && registerPassword) {
+        // Set auth state in localStorage
+        localStorage.setItem("auth", "true");
+        
         toast({
           title: "Registration successful",
-          description: "Welcome to PreventivePal! You can now log in.",
+          description: "Welcome to PreventivePal! Your account has been created.",
         });
+        navigate("/dashboard");
       } else {
         toast({
           variant: "destructive",
@@ -78,7 +86,7 @@ const Login = () => {
           description: "Please fill in all required fields.",
         });
       }
-    }, 1500);
+    }, 1000);
   };
 
   return (
@@ -98,7 +106,7 @@ const Login = () => {
           </CardDescription>
         </CardHeader>
         
-        <Tabs defaultValue="login" className="w-full">
+        <Tabs defaultValue={defaultTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="login">Login</TabsTrigger>
             <TabsTrigger value="register">Register</TabsTrigger>

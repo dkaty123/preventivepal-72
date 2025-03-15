@@ -1,18 +1,44 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { MenuIcon, X, Bell, User } from "lucide-react";
+import { MenuIcon, X, Bell, User, Calendar, BarChart, Settings } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
+  const { toast } = useToast();
   
-  // Mock authentication state - in a real app, you would use context or state management
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // Check authentication state from localStorage
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("auth") === "true");
+  
+  // Update auth state when localStorage changes
+  useEffect(() => {
+    const checkAuth = () => {
+      setIsLoggedIn(localStorage.getItem("auth") === "true");
+    };
+    
+    // Check initially
+    checkAuth();
+    
+    // Listen for storage events (if user logs in/out in another tab)
+    window.addEventListener("storage", checkAuth);
+    
+    return () => {
+      window.removeEventListener("storage", checkAuth);
+    };
+  }, []);
   
   const handleLogout = () => {
+    localStorage.removeItem("auth");
     setIsLoggedIn(false);
+    
+    toast({
+      title: "Logged out",
+      description: "You have been successfully logged out",
+    });
+    
     navigate("/");
   };
 
@@ -21,8 +47,8 @@ const Header = () => {
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-2">
           <Link to="/" className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-full bg-brand-500 flex items-center justify-center">
-              <span className="font-bold text-white">P</span>
+            <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center">
+              <span className="font-bold text-primary-foreground">P</span>
             </div>
             <span className="font-semibold text-xl hidden sm:inline-block">PreventivePal</span>
           </Link>
