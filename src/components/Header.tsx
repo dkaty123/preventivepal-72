@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { MenuIcon, X, Bell, User, Calendar, BarChart, Settings } from "lucide-react";
+import { MenuIcon, X, Bell, User, Calendar, BarChart, Settings, HelpCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const Header = () => {
@@ -60,7 +60,7 @@ const Header = () => {
             <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center">
               <span className="font-bold text-primary-foreground">P</span>
             </div>
-            <span className="font-semibold text-xl hidden sm:inline-block">PreventivePal</span>
+            <span className="font-semibold text-xl hidden sm:inline-block bg-clip-text text-transparent bg-gradient-to-r from-brand-600 to-brand-500">PreventivePal</span>
           </Link>
         </div>
 
@@ -76,6 +76,7 @@ const Header = () => {
         {/* Desktop navigation */}
         <nav className="hidden md:flex items-center gap-6">
           <Link to="/" className={isActive("/")}>Home</Link>
+          <Link to="/faq" className={isActive("/faq")}>FAQ</Link>
           {isLoggedIn && (
             <>
               <Link to="/dashboard" className={isActive("/dashboard")}>Dashboard</Link>
@@ -85,16 +86,16 @@ const Header = () => {
           <div className="flex items-center gap-4 ml-4">
             {isLoggedIn ? (
               <>
-                <Button variant="outline" size="sm" className="gap-1" onClick={() => navigate('/profile')}>
+                <Button variant="outline" size="sm" className="gap-1 border-brand-200 hover:bg-brand-50" onClick={() => navigate('/profile')}>
                   <User className="h-4 w-4" />
                   <span className="hidden sm:inline">My Account</span>
                 </Button>
-                <Button size="sm" onClick={handleLogout}>Log out</Button>
+                <Button size="sm" className="bg-brand-600 hover:bg-brand-700 text-white" onClick={handleLogout}>Log out</Button>
               </>
             ) : (
               <>
-                <Button variant="outline" size="sm" onClick={() => navigate('/login')}>Log in</Button>
-                <Button size="sm" onClick={() => navigate('/login?tab=register')}>Sign up</Button>
+                <Button variant="outline" size="sm" className="border-brand-200 hover:bg-brand-50" onClick={() => navigate('/login')}>Log in</Button>
+                <Button size="sm" className="bg-brand-600 hover:bg-brand-700 text-white" onClick={() => navigate('/login?tab=register')}>Sign up</Button>
               </>
             )}
           </div>
@@ -110,6 +111,13 @@ const Header = () => {
                 onClick={() => setIsOpen(false)}
               >
                 Home
+              </Link>
+              <Link 
+                to="/faq" 
+                className={`text-lg py-2 ${isActive("/faq")}`}
+                onClick={() => setIsOpen(false)}
+              >
+                FAQ
               </Link>
               {isLoggedIn && (
                 <>
@@ -136,16 +144,16 @@ const Header = () => {
                       <User className="h-4 w-4 mr-2" />
                       My Account
                     </Button>
-                    <Button size="lg" onClick={() => { setIsOpen(false); handleLogout(); }}>
+                    <Button size="lg" className="bg-brand-600 hover:bg-brand-700 text-white" onClick={() => { setIsOpen(false); handleLogout(); }}>
                       Log out
                     </Button>
                   </>
                 ) : (
                   <>
-                    <Button variant="outline" size="lg" onClick={() => { setIsOpen(false); navigate('/login'); }}>
+                    <Button variant="outline" size="lg" className="border-brand-200 hover:bg-brand-50" onClick={() => { setIsOpen(false); navigate('/login'); }}>
                       Log in
                     </Button>
-                    <Button size="lg" onClick={() => { setIsOpen(false); navigate('/login?tab=register'); }}>
+                    <Button size="lg" className="bg-brand-600 hover:bg-brand-700 text-white" onClick={() => { setIsOpen(false); navigate('/login?tab=register'); }}>
                       Sign up
                     </Button>
                   </>
