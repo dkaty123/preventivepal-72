@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,24 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Custom brand colors
+				brand: {
+					50: '#E6F7F5',
+					100: '#CCEFEC',
+					200: '#99DFDA',
+					300: '#66CFC7',
+					400: '#33BFB5',
+					500: '#00AFA2', // Primary brand color
+					600: '#008C82',
+					700: '#006961',
+					800: '#004641',
+					900: '#002320',
+				},
+				health: {
+					check: '#10B981', // Success/completed
+					warning: '#FBBF24', // Warning/upcoming
+					alert: '#EF4444',  // Alert/overdue
 				}
 			},
 			borderRadius: {
@@ -84,11 +103,19 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'pulse-gentle': {
+					'0%, 100%': { opacity: '1' },
+					'50%': { opacity: '0.85' },
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'pulse-gentle': 'pulse-gentle 3s ease-in-out infinite',
+			},
+			fontFamily: {
+				sans: ['Inter', 'sans-serif'],
 			}
 		}
 	},
