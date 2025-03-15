@@ -1,19 +1,28 @@
-import { useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
-import { LockIcon, MailIcon, UserIcon } from "lucide-react";
+import { LockIcon, MailIcon, UserIcon, ShieldCheck } from "lucide-react";
 
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchParams] = useSearchParams();
   const defaultTab = searchParams.get("tab") || "login";
+
+  // Check if already logged in
+  useEffect(() => {
+    if (localStorage.getItem("auth") === "true") {
+      navigate("/dashboard");
+    }
+  }, [navigate]);
 
   // Login form state
   const [loginEmail, setLoginEmail] = useState("");
@@ -98,16 +107,18 @@ const Login = () => {
         <span className="font-semibold text-2xl">PreventivePal</span>
       </Link>
       
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-md shadow-lg border-brand-200">
         <CardHeader className="space-y-1 text-center">
-          <CardTitle className="text-2xl font-bold">Welcome</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-2xl font-bold bg-gradient-to-r from-brand-600 to-brand-400 bg-clip-text text-transparent">
+            Welcome to PreventivePal
+          </CardTitle>
+          <CardDescription className="text-muted-foreground">
             Login or create an account to manage your health journey
           </CardDescription>
         </CardHeader>
         
         <Tabs defaultValue={defaultTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
+          <TabsList className="grid w-full grid-cols-2 mb-4">
             <TabsTrigger value="login">Login</TabsTrigger>
             <TabsTrigger value="register">Register</TabsTrigger>
           </TabsList>
@@ -167,10 +178,23 @@ const Login = () => {
               <CardFooter>
                 <Button 
                   type="submit" 
-                  className="w-full bg-brand-500 hover:bg-brand-600" 
+                  className="w-full bg-brand-500 hover:bg-brand-600 transition-all" 
                   disabled={isLoading}
                 >
-                  {isLoading ? "Logging in..." : "Login"}
+                  {isLoading ? (
+                    <div className="flex items-center">
+                      <svg className="animate-spin -ml-1 mr-3 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Logging in...
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-center">
+                      <ShieldCheck className="mr-2 h-4 w-4" />
+                      Login
+                    </div>
+                  )}
                 </Button>
               </CardFooter>
             </form>
@@ -241,10 +265,23 @@ const Login = () => {
               <CardFooter>
                 <Button 
                   type="submit" 
-                  className="w-full bg-brand-500 hover:bg-brand-600" 
+                  className="w-full bg-brand-500 hover:bg-brand-600 transition-all" 
                   disabled={isLoading}
                 >
-                  {isLoading ? "Creating account..." : "Create account"}
+                  {isLoading ? (
+                    <div className="flex items-center">
+                      <svg className="animate-spin -ml-1 mr-3 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Creating account...
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-center">
+                      <UserIcon className="mr-2 h-4 w-4" />
+                      Create account
+                    </div>
+                  )}
                 </Button>
               </CardFooter>
             </form>
@@ -252,17 +289,24 @@ const Login = () => {
         </Tabs>
       </Card>
       
-      <p className="mt-6 text-center text-sm text-muted-foreground">
-        By using PreventivePal, you agree to our{" "}
-        <Link to="#" className="text-brand-600 hover:text-brand-700 font-medium">
-          Terms of Service
-        </Link>{" "}
-        and{" "}
-        <Link to="#" className="text-brand-600 hover:text-brand-700 font-medium">
-          Privacy Policy
-        </Link>
-        .
-      </p>
+      <div className="mt-8 text-center max-w-md">
+        <p className="text-sm text-muted-foreground mb-4">
+          By using PreventivePal, you agree to our{" "}
+          <Link to="#" className="text-brand-600 hover:text-brand-700 font-medium">
+            Terms of Service
+          </Link>{" "}
+          and{" "}
+          <Link to="#" className="text-brand-600 hover:text-brand-700 font-medium">
+            Privacy Policy
+          </Link>
+          .
+        </p>
+        <div className="flex flex-wrap justify-center gap-2">
+          <span className="px-3 py-1 bg-brand-100 text-brand-700 rounded-full text-xs font-medium">Secure login</span>
+          <span className="px-3 py-1 bg-brand-100 text-brand-700 rounded-full text-xs font-medium">Data privacy</span>
+          <span className="px-3 py-1 bg-brand-100 text-brand-700 rounded-full text-xs font-medium">Personalized care</span>
+        </div>
+      </div>
     </div>
   );
 };

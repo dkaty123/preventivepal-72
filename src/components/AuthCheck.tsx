@@ -1,6 +1,6 @@
 
 import { Navigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
 interface AuthCheckProps {
@@ -10,20 +10,32 @@ interface AuthCheckProps {
 
 const AuthCheck = ({ children, fallback = "/login" }: AuthCheckProps) => {
   const { toast } = useToast();
-  
-  // This is a simplified mock authentication check
-  // In a real app, you would check a global auth state
-  const isLoggedIn = localStorage.getItem("auth") === "true";
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("auth") === "true");
   
   useEffect(() => {
-    if (!isLoggedIn) {
-      toast({
-        title: "Authentication required",
-        description: "Please log in to access this page",
-        variant: "destructive",
-      });
-    }
-  }, [isLoggedIn, toast]);
+    // Check auth status on mount and when localStorage changes
+    const checkAuth = () => {
+      const authStatus = localStorage.getItem("auth") === "true";
+      setIsLoggedIn(authStatus);
+      
+      if (!authStatus) {
+        toast({
+          title: "Authentication required",
+          description: "Please log in to access this page",
+          variant: "destructive",
+        });
+      }
+    };
+    
+    checkAuth();
+    
+    // Listen for storage events (if user logs in/out in another tab)
+    window.addEventListener("storage", checkAuth);
+    
+    return () => {
+      window.removeEventListener("storage", checkAuth);
+    };
+  }, [toast]);
   
   if (!isLoggedIn) {
     return <Navigate to={fallback} replace />;

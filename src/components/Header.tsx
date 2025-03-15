@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { MenuIcon, X, Bell, User, Calendar, BarChart, Settings } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
   
   // Check authentication state from localStorage
@@ -25,10 +26,13 @@ const Header = () => {
     // Listen for storage events (if user logs in/out in another tab)
     window.addEventListener("storage", checkAuth);
     
+    // Check auth status whenever location changes
+    checkAuth();
+    
     return () => {
       window.removeEventListener("storage", checkAuth);
     };
-  }, []);
+  }, [location]);
   
   const handleLogout = () => {
     localStorage.removeItem("auth");
@@ -40,6 +44,12 @@ const Header = () => {
     });
     
     navigate("/");
+  };
+
+  const isActive = (path: string) => {
+    return location.pathname === path 
+      ? "font-medium text-primary hover:text-primary/90 transition border-b-2 border-primary pb-1" 
+      : "text-foreground/80 hover:text-foreground transition";
   };
 
   return (
@@ -65,11 +75,11 @@ const Header = () => {
 
         {/* Desktop navigation */}
         <nav className="hidden md:flex items-center gap-6">
-          <Link to="/" className="text-foreground/80 hover:text-foreground transition">Home</Link>
+          <Link to="/" className={isActive("/")}>Home</Link>
           {isLoggedIn && (
             <>
-              <Link to="/dashboard" className="text-foreground/80 hover:text-foreground transition">Dashboard</Link>
-              <Link to="/profile" className="text-foreground/80 hover:text-foreground transition">Profile</Link>
+              <Link to="/dashboard" className={isActive("/dashboard")}>Dashboard</Link>
+              <Link to="/profile" className={isActive("/profile")}>Profile</Link>
             </>
           )}
           <div className="flex items-center gap-4 ml-4">
@@ -96,7 +106,7 @@ const Header = () => {
             <nav className="flex flex-col gap-6 p-6">
               <Link 
                 to="/" 
-                className="text-foreground/80 hover:text-foreground transition text-lg py-2"
+                className={`text-lg py-2 ${isActive("/")}`}
                 onClick={() => setIsOpen(false)}
               >
                 Home
@@ -105,14 +115,14 @@ const Header = () => {
                 <>
                   <Link 
                     to="/dashboard" 
-                    className="text-foreground/80 hover:text-foreground transition text-lg py-2"
+                    className={`text-lg py-2 ${isActive("/dashboard")}`}
                     onClick={() => setIsOpen(false)}
                   >
                     Dashboard
                   </Link>
                   <Link 
                     to="/profile" 
-                    className="text-foreground/80 hover:text-foreground transition text-lg py-2"
+                    className={`text-lg py-2 ${isActive("/profile")}`}
                     onClick={() => setIsOpen(false)}
                   >
                     Profile
