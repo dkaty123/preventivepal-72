@@ -8,7 +8,7 @@ import Pricing from "@/components/Pricing";
 import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ChevronRight, Clock, CalendarCheck, Sparkles, Award } from "lucide-react";
+import { ArrowRight, ChevronRight, Clock, CalendarCheck, Sparkles, Award, Check } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const HowItWorks = () => {
