@@ -524,7 +524,7 @@ const InsuranceBenefits = () => {
                         <div className="flex flex-col items-end justify-center">
                           <div className="text-lg font-bold">${claim.amount}</div>
                           <Badge variant={
-                            claim.status === "approved" ? "success" : 
+                            claim.status === "approved" ? "default" : 
                             claim.status === "denied" ? "destructive" : 
                             "outline"
                           }>
