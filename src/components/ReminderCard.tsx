@@ -7,14 +7,16 @@ import { Calendar, Clock, CheckCircle } from "lucide-react";
 export type ReminderStatus = "upcoming" | "due" | "overdue" | "completed";
 
 interface ReminderCardProps {
+  id: string;
   title: string;
   date: string;
   type: string;
   status: ReminderStatus;
   description?: string;
+  onMarkComplete?: () => void;
 }
 
-const ReminderCard = ({ title, date, type, status, description }: ReminderCardProps) => {
+const ReminderCard = ({ title, date, type, status, description, onMarkComplete }: ReminderCardProps) => {
   // Status specific styling
   const getStatusColor = (status: ReminderStatus) => {
     switch (status) {
@@ -69,8 +71,19 @@ const ReminderCard = ({ title, date, type, status, description }: ReminderCardPr
           <div className="flex gap-2 mt-4">
             {status !== "completed" ? (
               <>
-                <Button size="sm" variant="default">Schedule</Button>
-                <Button size="sm" variant="outline" className="flex items-center gap-1">
+                <Button 
+                  size="sm" 
+                  variant="default" 
+                  onClick={() => window.open("https://www.zocdoc.com", "_blank")}
+                >
+                  Schedule
+                </Button>
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  className="flex items-center gap-1"
+                  onClick={onMarkComplete}
+                >
                   <CheckCircle className="h-4 w-4" />
                   Mark Complete
                 </Button>
