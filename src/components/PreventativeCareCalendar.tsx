@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -9,6 +8,7 @@ import { AlertCircle, Calendar as CalendarIcon, CheckCircle, Clock, Info } from 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useToast } from "@/components/ui/use-toast";
 import { format } from "date-fns";
+import { useHealthData } from "@/contexts/HealthDataContext";
 
 interface PreventativeEvent {
   id: string;
@@ -28,7 +28,8 @@ const PreventativeCareCalendar = () => {
   const [activeView, setActiveView] = useState("calendar");
   const [isPremium, setIsPremium] = useState(false);
   
-  // Mock preventative care events
+  const { healthData, connectedPlatform, hasConsented } = useHealthData();
+  
   const [events, setEvents] = useState<PreventativeEvent[]>([
     {
       id: "1",
@@ -105,20 +106,76 @@ const PreventativeCareCalendar = () => {
     }
   ]);
   
-  // Get events for the selected date
+  useEffect(() => {
+    if (healthData && connectedPlatform !== "none" && hasConsented) {
+      const newEvents: PreventativeEvent[] = [];
+      
+      if (healthData.bloodPressure && healthData.bloodPressure.systolic > 130) {
+        const checkupDate = new Date();
+        checkupDate.setDate(checkupDate.getDate() + 14); // Two weeks from now
+        
+        newEvents.push({
+          id: "health-bp-1",
+          title: "Blood Pressure Check",
+          date: checkupDate,
+          type: "checkup",
+          status: "upcoming",
+          description: `Follow-up on elevated blood pressure (${healthData.bloodPressure.systolic}/${healthData.bloodPressure.diastolic} mmHg)`,
+          importance: "high-priority",
+          insuranceCoverage: 100,
+          notes: "Based on your recent health data readings"
+        });
+      }
+      
+      if (healthData.cholesterol && healthData.cholesterol.total > 200) {
+        const checkupDate = new Date();
+        checkupDate.setDate(checkupDate.getDate() + 30); // Month from now
+        
+        newEvents.push({
+          id: "health-chol-1",
+          title: "Lipid Panel Follow-up",
+          date: checkupDate,
+          type: "lab",
+          status: "upcoming",
+          description: `Follow-up on elevated cholesterol levels (${healthData.cholesterol.total} mg/dL)`,
+          importance: "recommended",
+          insuranceCoverage: 90,
+          notes: "Monitoring based on your connected health data"
+        });
+      }
+      
+      if (newEvents.length > 0) {
+        setEvents(prevEvents => {
+          const combinedEvents = [...prevEvents];
+          
+          newEvents.forEach(newEvent => {
+            const existingIndex = combinedEvents.findIndex(event => 
+              event.title.toLowerCase().includes(newEvent.title.toLowerCase().substring(0, 10))
+            );
+            
+            if (existingIndex >= 0) {
+              combinedEvents[existingIndex] = newEvent;
+            } else {
+              combinedEvents.push(newEvent);
+            }
+          });
+          
+          return combinedEvents;
+        });
+      }
+    }
+  }, [healthData, connectedPlatform, hasConsented]);
+  
   const selectedDateEvents = events.filter(
     event => date && event.date.toDateString() === date.toDateString()
   );
   
-  // Upcoming events sorted by date
   const upcomingEvents = [...events]
     .filter(event => event.status === "upcoming")
     .sort((a, b) => a.date.getTime() - b.date.getTime());
   
-  // Get dates with events for calendar highlighting
   const eventDates = events.map(event => event.date);
   
-  // Mark event as completed
   const markCompleted = (id: string) => {
     setEvents(
       events.map(event => 
@@ -134,7 +191,6 @@ const PreventativeCareCalendar = () => {
     });
   };
   
-  // Toggle premium demo
   const togglePremium = () => {
     setIsPremium(!isPremium);
     toast({
@@ -143,12 +199,10 @@ const PreventativeCareCalendar = () => {
     });
   };
 
-  // Create a modifier for highlighting days with events
   const modifiers = {
     eventDay: eventDates
   };
 
-  // Style for the highlighted days
   const modifiersStyles = {
     eventDay: { 
       fontWeight: 'bold',
@@ -183,6 +237,17 @@ const PreventativeCareCalendar = () => {
           <AlertDescription>
             Upgrade to Premium for a comprehensive preventative care plan optimized for your health profile and insurance benefits.
             <Button variant="link" className="p-0 h-auto font-semibold">Upgrade Now</Button>
+          </AlertDescription>
+        </Alert>
+      )}
+      
+      {connectedPlatform !== "none" && hasConsented && healthData && (
+        <Alert className="bg-brand-50 border-brand-200">
+          <Info className="h-4 w-4 text-brand-500" />
+          <AlertTitle className="text-brand-700">Health Data Connected</AlertTitle>
+          <AlertDescription className="text-brand-600">
+            Your preventative care schedule has been optimized based on your connected health data from 
+            {connectedPlatform === "apple_health" ? " Apple Health" : " Google Fit"}.
           </AlertDescription>
         </Alert>
       )}

@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HealthDataProvider } from "./contexts/HealthDataContext";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
@@ -28,27 +29,29 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/calendar" element={<CalendarPage />} />
-          <Route path="/benefits" element={<Benefits />} />
-          <Route path="/recommended" element={<Recommended />} />
-          <Route path="/health-insights" element={<HealthInsights />} />
-          <Route path="/symptom-checker" element={<SymptomCheckerPage />} />
-          <Route path="/location-alerts" element={<LocationHealthAlertsPage />} />
-          <Route path="/genetic-risk" element={<GeneticRiskPage />} />
-          <Route path="/health-goals" element={<HealthGoalsPage />} />
-          <Route path="/reminders" element={<RemindersPage />} />
-          <Route path="/preventative-care" element={<PreventativeCarePage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/faq" element={<Faq />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <HealthDataProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/calendar" element={<CalendarPage />} />
+            <Route path="/benefits" element={<Benefits />} />
+            <Route path="/recommended" element={<Recommended />} />
+            <Route path="/health-insights" element={<HealthInsights />} />
+            <Route path="/symptom-checker" element={<SymptomCheckerPage />} />
+            <Route path="/location-alerts" element={<LocationHealthAlertsPage />} />
+            <Route path="/genetic-risk" element={<GeneticRiskPage />} />
+            <Route path="/health-goals" element={<HealthGoalsPage />} />
+            <Route path="/reminders" element={<RemindersPage />} />
+            <Route path="/preventative-care" element={<PreventativeCarePage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/faq" element={<Faq />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </HealthDataProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );

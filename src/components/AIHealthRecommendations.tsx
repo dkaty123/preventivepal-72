@@ -8,6 +8,8 @@ import { Brain, HeartHandshake, ListChecks, Info, Star, AlertCircle, ChevronRigh
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/components/ui/use-toast";
+import { useHealthData } from "@/contexts/HealthDataContext";
+import HealthPlatformConnect from "./HealthPlatformConnect";
 
 interface AIRecommendation {
   id: string;
@@ -25,11 +27,13 @@ interface AIRecommendation {
   isPremiumFeature: boolean;
   completionProgress?: number; // 0-100
   personalizationFactors?: string[];
+  healthDataBased?: boolean;
 }
 
 const AIHealthRecommendations = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { healthData, connectedPlatform, hasConsented } = useHealthData();
   const [isPremium, setIsPremium] = useState(false); // Simulated premium status
   const [activeTab, setActiveTab] = useState("all");
   const [userProfile, setUserProfile] = useState({
@@ -288,6 +292,130 @@ const AIHealthRecommendations = () => {
     }
   };
   
+  useEffect(() => {
+    if (healthData && connectedPlatform !== "none" && hasConsented) {
+      const healthDataRecommendations: AIRecommendation[] = [];
+      
+      if (healthData.sleepHours && healthData.sleepHours < 7) {
+        healthDataRecommendations.push({
+          id: "health-1",
+          title: "Improve Sleep Duration",
+          description: `Your average sleep of ${healthData.sleepHours} hours is below recommended levels for your age.`,
+          category: "lifestyle",
+          urgency: "medium",
+          confidence: 90,
+          reasoning: "Sleep data from your health profile indicates consistently less than 7 hours of sleep per night.",
+          action: {
+            type: "education",
+            text: "Sleep Improvement Plan",
+          },
+          isPremiumFeature: false,
+          healthDataBased: true,
+          personalizationFactors: [`Current sleep: ${healthData.sleepHours} hours`, "Recommendation: 7-8 hours"]
+        });
+      }
+      
+      if (healthData.heartRate && healthData.heartRate.resting > 80) {
+        healthDataRecommendations.push({
+          id: "health-2",
+          title: "Heart Health Check Recommended",
+          description: `Your resting heart rate of ${healthData.heartRate.resting} bpm is elevated.`,
+          category: "checkup",
+          urgency: healthData.heartRate.resting > 90 ? "high" : "medium",
+          confidence: 85,
+          reasoning: "Elevated resting heart rate may indicate cardiovascular strain or other health issues.",
+          action: {
+            type: "appointment",
+            text: "Schedule Checkup",
+            link: "/calendar"
+          },
+          isPremiumFeature: false,
+          healthDataBased: true,
+          personalizationFactors: [`Resting HR: ${healthData.heartRate.resting} bpm`, "Optimal range: 60-80 bpm"]
+        });
+      }
+      
+      if (healthData.steps && healthData.steps < 5000) {
+        healthDataRecommendations.push({
+          id: "health-3",
+          title: "Increase Daily Activity",
+          description: `Your average of ${healthData.steps.toLocaleString()} steps is below recommended levels.`,
+          category: "lifestyle",
+          urgency: "medium",
+          confidence: 92,
+          reasoning: "Low daily step count may contribute to decreased cardiovascular health and metabolic issues.",
+          action: {
+            type: "habit",
+            text: "Activity Plan",
+          },
+          isPremiumFeature: false,
+          healthDataBased: true,
+          personalizationFactors: [`Current steps: ${healthData.steps.toLocaleString()}/day`, "Target: 7,500-10,000 steps"]
+        });
+      }
+      
+      if (healthData.bloodPressure && healthData.bloodPressure.systolic > 130) {
+        healthDataRecommendations.push({
+          id: "health-4",
+          title: "Blood Pressure Management",
+          description: `Your blood pressure of ${healthData.bloodPressure.systolic}/${healthData.bloodPressure.diastolic} mmHg is elevated.`,
+          category: "checkup",
+          urgency: healthData.bloodPressure.systolic > 140 ? "high" : "medium",
+          confidence: 88,
+          reasoning: "Elevated blood pressure increases risk of cardiovascular disease and other health issues.",
+          action: {
+            type: "appointment",
+            text: "Consult Doctor",
+            link: "/calendar"
+          },
+          isPremiumFeature: false,
+          healthDataBased: true,
+          personalizationFactors: [`BP: ${healthData.bloodPressure.systolic}/${healthData.bloodPressure.diastolic} mmHg`, "Optimal: <120/80 mmHg"]
+        });
+      }
+      
+      if (healthData.cholesterol && healthData.cholesterol.ldl > 130) {
+        healthDataRecommendations.push({
+          id: "health-5",
+          title: "Cholesterol Management Plan",
+          description: `Your LDL cholesterol of ${healthData.cholesterol.ldl} mg/dL is above recommended levels.`,
+          category: "nutrition",
+          urgency: "medium",
+          confidence: 87,
+          reasoning: "Elevated LDL cholesterol is associated with increased cardiovascular risk.",
+          action: {
+            type: "education",
+            text: "Dietary Guidance",
+          },
+          isPremiumFeature: false,
+          healthDataBased: true,
+          personalizationFactors: [`LDL: ${healthData.cholesterol.ldl} mg/dL`, "HDL: ${healthData.cholesterol.hdl} mg/dL", "Target LDL: <100 mg/dL"]
+        });
+      }
+      
+      if (healthDataRecommendations.length > 0) {
+        setRecommendations(prevRecs => {
+          const newRecs = [...prevRecs];
+          
+          healthDataRecommendations.forEach(newRec => {
+            const existingIndex = newRecs.findIndex(rec => 
+              rec.category === newRec.category && 
+              rec.title.toLowerCase().includes(newRec.title.toLowerCase().substring(0, 10))
+            );
+            
+            if (existingIndex >= 0) {
+              newRecs[existingIndex] = newRec;
+            } else {
+              newRecs.push(newRec);
+            }
+          });
+          
+          return newRecs;
+        });
+      }
+    }
+  }, [healthData, connectedPlatform, hasConsented]);
+  
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -361,6 +489,8 @@ const AIHealthRecommendations = () => {
         </CardContent>
       </Card>
       
+      <HealthPlatformConnect />
+      
       <Tabs defaultValue="all" className="w-full" value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="grid grid-cols-3 md:grid-cols-6 lg:w-auto">
           <TabsTrigger value="all">All</TabsTrigger>
@@ -382,17 +512,24 @@ const AIHealthRecommendations = () => {
               <CardHeader>
                 <div className="flex justify-between items-start">
                   <CardTitle className="text-lg">{recommendation.title}</CardTitle>
-                  <Badge 
-                    variant={
-                      recommendation.urgency === 'high' ? 'destructive' 
-                      : recommendation.urgency === 'medium' ? 'default' 
-                      : 'secondary'
-                    }
-                  >
-                    {recommendation.urgency === 'high' ? 'High Priority' 
-                     : recommendation.urgency === 'medium' ? 'Recommended' 
-                     : 'Optional'}
-                  </Badge>
+                  <div className="flex gap-1">
+                    {recommendation.healthDataBased && (
+                      <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
+                        Health Data
+                      </Badge>
+                    )}
+                    <Badge 
+                      variant={
+                        recommendation.urgency === 'high' ? 'destructive' 
+                        : recommendation.urgency === 'medium' ? 'default' 
+                        : 'secondary'
+                      }
+                    >
+                      {recommendation.urgency === 'high' ? 'High Priority' 
+                       : recommendation.urgency === 'medium' ? 'Recommended' 
+                       : 'Optional'}
+                    </Badge>
+                  </div>
                 </div>
                 <CardDescription>{recommendation.description}</CardDescription>
               </CardHeader>

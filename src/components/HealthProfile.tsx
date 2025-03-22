@@ -1,4 +1,3 @@
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -24,6 +23,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useToast } from "@/hooks/use-toast";
+import { useHealthData } from "@/contexts/HealthDataContext";
+import HealthPlatformConnect from "./HealthPlatformConnect";
 
 const healthProfileSchema = z.object({
   firstName: z.string().min(2, {
@@ -88,12 +90,26 @@ const HealthProfile = () => {
     resolver: zodResolver(healthProfileSchema),
     defaultValues,
   });
+  
+  const { toast } = useToast();
+  const { healthData } = useHealthData();
 
   function onSubmit(data: HealthProfileFormValues) {
     console.log(data);
     // Here you would typically send this data to your backend
-    alert("Profile updated successfully!");
+    toast({
+      title: "Profile updated successfully!",
+      description: "Your health profile has been saved."
+    });
   }
+  
+  React.useEffect(() => {
+    if (healthData) {
+      if (healthData.weight) {
+        form.setValue('weight', String(healthData.weight));
+      }
+    }
+  }, [healthData, form]);
 
   return (
     <div className="space-y-6">
@@ -102,6 +118,14 @@ const HealthProfile = () => {
         <p className="text-muted-foreground">
           Complete your health profile to receive personalized preventative care recommendations.
         </p>
+      </div>
+      
+      <div className="mb-8">
+        <h2 className="text-xl font-semibold mb-4">Health Data Connection</h2>
+        <p className="text-muted-foreground mb-4">
+          Connect your health platform to automatically import your health data and receive more personalized recommendations.
+        </p>
+        <HealthPlatformConnect />
       </div>
 
       <Tabs defaultValue="personal" className="w-full">
