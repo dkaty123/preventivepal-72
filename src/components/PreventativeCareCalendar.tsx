@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AlertCircle, Calendar as CalendarIcon, CheckCircle, Clock, Info } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useToast } from "@/components/ui/use-toast";
+import { format } from "date-fns";
 
 interface PreventativeEvent {
   id: string;
@@ -141,6 +142,21 @@ const PreventativeCareCalendar = () => {
       description: isPremium ? "Premium features are now hidden." : "You now have access to premium features.",
     });
   };
+
+  // Create a modifier for highlighting days with events
+  const modifiers = {
+    eventDay: eventDates
+  };
+
+  // Style for the highlighted days
+  const modifiersStyles = {
+    eventDay: { 
+      fontWeight: 'bold',
+      backgroundColor: 'rgba(59, 130, 246, 0.1)', // Light blue background
+      border: '2px solid rgba(59, 130, 246, 0.5)', // Blue border
+      borderRadius: '50%'
+    }
+  };
   
   return (
     <div className="space-y-6">
@@ -184,7 +200,8 @@ const PreventativeCareCalendar = () => {
                 selected={date}
                 onSelect={setDate}
                 className="rounded-md border w-full"
-                highlightedDays={eventDates.map(date => date.getDate())}
+                modifiers={modifiers}
+                modifiersStyles={modifiersStyles}
               />
             </CardContent>
             <CardFooter>
