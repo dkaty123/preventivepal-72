@@ -1,20 +1,16 @@
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import UserDashboard from "@/components/UserDashboard";
+import DynamicReminders from "@/components/DynamicReminders";
 import AuthCheck from "@/components/AuthCheck";
-import { Suspense } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
 
-const Dashboard = () => {
+const RemindersPage = () => {
   return (
     <AuthCheck>
       <div className="min-h-screen flex flex-col">
         <Header />
         <main className="flex-grow container py-8">
-          <Suspense fallback={<Skeleton className="w-full h-[500px]" />}>
-            <UserDashboard />
-          </Suspense>
+          <DynamicReminders />
         </main>
         <Footer />
       </div>
@@ -22,4 +18,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default RemindersPage;

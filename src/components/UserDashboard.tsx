@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
@@ -7,8 +8,8 @@ import { Switch } from "@/components/ui/switch";
 import ReminderCard from "./ReminderCard";
 import { 
   Bell, Calendar, Settings, PlusCircle, ListChecks, Calendar as CalendarIcon, 
-  CheckCircle, Shield, Stethoscope, Languages, Brain, MessageSquare, 
-  Activity, HeartHandshake 
+  CheckCircle, Shield, Stethoscope, Brain, MessageSquare, 
+  Activity, HeartHandshake, MapPin, Dna, Target, BellRing
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import AppointmentCalendar from "./AppointmentCalendar";
@@ -256,6 +257,91 @@ const UserDashboard = () => {
             <CardFooter>
               <Button variant="outline" className="w-full">
                 Upgrade to Premium
+              </Button>
+            </CardFooter>
+          </Card>
+        </div>
+      </div>
+
+      <div>
+        <h2 className="text-xl font-semibold mb-4">New Features</h2>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <Card className="bg-gradient-to-br from-purple-50 to-indigo-50 border-purple-100">
+            <CardHeader className="pb-2">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg">Location Alerts</CardTitle>
+                <MapPin className="h-5 w-5 text-purple-500" />
+              </div>
+              <CardDescription>Localized health advisories</CardDescription>
+            </CardHeader>
+            <CardContent className="pb-2">
+              <p className="text-sm">Get health alerts based on your location, like air quality warnings and disease outbreaks.</p>
+            </CardContent>
+            <CardFooter>
+              <Button asChild className="w-full bg-purple-600 hover:bg-purple-700">
+                <Link to="/location-alerts">
+                  View Local Alerts
+                </Link>
+              </Button>
+            </CardFooter>
+          </Card>
+          
+          <Card className="bg-gradient-to-br from-indigo-50 to-blue-50 border-indigo-100">
+            <CardHeader className="pb-2">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg">Genetic Risk</CardTitle>
+                <Dna className="h-5 w-5 text-indigo-500" />
+              </div>
+              <CardDescription>Premium+ feature</CardDescription>
+            </CardHeader>
+            <CardContent className="pb-2">
+              <p className="text-sm">Upload genetic testing data for personalized health risk insights and recommendations.</p>
+            </CardContent>
+            <CardFooter>
+              <Button asChild className="w-full bg-indigo-600 hover:bg-indigo-700">
+                <Link to="/genetic-risk">
+                  Explore DNA Insights
+                </Link>
+              </Button>
+            </CardFooter>
+          </Card>
+          
+          <Card className="bg-gradient-to-br from-green-50 to-teal-50 border-green-100">
+            <CardHeader className="pb-2">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg">Health Goals</CardTitle>
+                <Target className="h-5 w-5 text-green-500" />
+              </div>
+              <CardDescription>Track & achieve health goals</CardDescription>
+            </CardHeader>
+            <CardContent className="pb-2">
+              <p className="text-sm">Set personal health goals with AI-powered tracking, insights, and recommendations.</p>
+            </CardContent>
+            <CardFooter>
+              <Button asChild className="w-full bg-green-600 hover:bg-green-700">
+                <Link to="/health-goals">
+                  Manage Goals
+                </Link>
+              </Button>
+            </CardFooter>
+          </Card>
+          
+          <Card className="bg-gradient-to-br from-rose-50 to-red-50 border-rose-100">
+            <CardHeader className="pb-2">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg">Smart Reminders</CardTitle>
+                <BellRing className="h-5 w-5 text-rose-500" />
+              </div>
+              <CardDescription>Urgency-based notifications</CardDescription>
+            </CardHeader>
+            <CardContent className="pb-2">
+              <p className="text-sm">Dynamic notifications that adapt based on the urgency and importance of health tasks.</p>
+            </CardContent>
+            <CardFooter>
+              <Button asChild className="w-full bg-rose-600 hover:bg-rose-700">
+                <Link to="/reminders">
+                  View Reminders
+                </Link>
               </Button>
             </CardFooter>
           </Card>

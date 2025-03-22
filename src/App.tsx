@@ -14,6 +14,10 @@ import Benefits from "./pages/Benefits";
 import Recommended from "./pages/Recommended";
 import HealthInsights from "./pages/HealthInsights";
 import SymptomCheckerPage from "./pages/SymptomCheckerPage";
+import LocationHealthAlertsPage from "./pages/LocationHealthAlertsPage";
+import GeneticRiskPage from "./pages/GeneticRiskPage";
+import HealthGoalsPage from "./pages/HealthGoalsPage";
+import RemindersPage from "./pages/RemindersPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -33,6 +37,10 @@ const App = () => (
           <Route path="/recommended" element={<Recommended />} />
           <Route path="/health-insights" element={<HealthInsights />} />
           <Route path="/symptom-checker" element={<SymptomCheckerPage />} />
+          <Route path="/location-alerts" element={<LocationHealthAlertsPage />} />
+          <Route path="/genetic-risk" element={<GeneticRiskPage />} />
+          <Route path="/health-goals" element={<HealthGoalsPage />} />
+          <Route path="/reminders" element={<RemindersPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/faq" element={<Faq />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
