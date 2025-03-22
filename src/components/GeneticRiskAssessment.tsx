@@ -1,9 +1,8 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { HeartPulse, Dna, FileUpload, Shield, ExternalLink, Lock } from "lucide-react";
+import { HeartPulse, Dna, Upload, Shield, ExternalLink, Lock } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Progress } from "@/components/ui/progress";
@@ -23,7 +22,6 @@ const GeneticRiskAssessment = () => {
   const [isPremium, setIsPremium] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   
-  // Mock genetic risk data
   const mockRisks: GeneticRisk[] = [
     {
       condition: "Type 2 Diabetes",
@@ -68,13 +66,11 @@ const GeneticRiskAssessment = () => {
     if (!file) return;
     
     if (isPremium) {
-      // Simulate file processing
       toast({
         title: "Processing DNA Data",
         description: "Your genetic data is being analyzed..."
       });
       
-      // Move to next step
       setUploadStep(2);
       setTimeout(() => {
         setUploadStep(3);
@@ -104,7 +100,6 @@ const GeneticRiskAssessment = () => {
     }
   };
   
-  // For demonstration, let's add a button to simulate having premium access
   const togglePremium = () => {
     setIsPremium(!isPremium);
     if (!isPremium) {
@@ -128,7 +123,6 @@ const GeneticRiskAssessment = () => {
           </p>
         </div>
         
-        {/* Demo toggle for premium access */}
         <Button variant="outline" size="sm" onClick={togglePremium}>
           {isPremium ? "Disable Premium (Demo)" : "Enable Premium (Demo)"}
         </Button>
@@ -195,7 +189,7 @@ const GeneticRiskAssessment = () => {
                 </Alert>
                 
                 <div className="border-2 border-dashed border-muted-foreground/20 rounded-lg p-8 text-center">
-                  <FileUpload className="h-10 w-10 text-muted-foreground/50 mx-auto mb-4" />
+                  <Upload className="h-10 w-10 text-muted-foreground/50 mx-auto mb-4" />
                   <h3 className="font-medium mb-2">Drag and drop your genetic data file</h3>
                   <p className="text-sm text-muted-foreground mb-4">
                     Supported formats: .txt, .csv, .zip from 23andMe, AncestryDNA
@@ -416,7 +410,7 @@ const GeneticRiskAssessment = () => {
                   </div>
                 </div>
                 <Button variant="outline" className="mt-4">
-                  <FileUpload className="mr-2 h-4 w-4" />
+                  <Upload className="mr-2 h-4 w-4" />
                   Download Full Report
                 </Button>
               </CardContent>
