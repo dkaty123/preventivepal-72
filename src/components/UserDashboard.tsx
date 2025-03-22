@@ -18,6 +18,7 @@ import RecommendedCheckups from "./RecommendedCheckups";
 import LanguageSelector from "./LanguageSelector";
 import AIHealthRecommendations from "./AIHealthRecommendations";
 import SymptomChecker from "./SymptomChecker";
+import PreventativeCareCalendar from "./PreventativeCareCalendar";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -260,6 +261,26 @@ const UserDashboard = () => {
               </Button>
             </CardFooter>
           </Card>
+          
+          <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-100">
+            <CardHeader className="pb-2">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg">Preventative Care</CardTitle>
+                <Stethoscope className="h-5 w-5 text-green-500" />
+              </div>
+              <CardDescription>Personalized health recommendations</CardDescription>
+            </CardHeader>
+            <CardContent className="pb-2">
+              <p className="text-sm">Your customized preventative care calendar based on your health profile.</p>
+            </CardContent>
+            <CardFooter>
+              <Button asChild className="w-full bg-green-600 hover:bg-green-700">
+                <Link to="/preventative-care">
+                  View Care Plan
+                </Link>
+              </Button>
+            </CardFooter>
+          </Card>
         </div>
       </div>
 
@@ -349,7 +370,7 @@ const UserDashboard = () => {
       </div>
 
       <Tabs defaultValue="upcoming" className="w-full">
-        <TabsList className="grid grid-cols-3 md:grid-cols-5 lg:w-auto lg:grid-cols-9">
+        <TabsList className="grid grid-cols-3 md:grid-cols-5 lg:w-auto lg:grid-cols-10">
           <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
           <TabsTrigger value="completed">Completed</TabsTrigger>
           <TabsTrigger value="all">All</TabsTrigger>
@@ -358,6 +379,7 @@ const UserDashboard = () => {
           <TabsTrigger value="recommended">Recommended</TabsTrigger>
           <TabsTrigger value="insights">AI Insights</TabsTrigger>
           <TabsTrigger value="symptoms">Symptom Checker</TabsTrigger>
+          <TabsTrigger value="preventative">Preventative</TabsTrigger>
           <TabsTrigger value="settings">Settings</TabsTrigger>
         </TabsList>
         
@@ -492,6 +514,10 @@ const UserDashboard = () => {
         
         <TabsContent value="symptoms" className="mt-6">
           <SymptomChecker />
+        </TabsContent>
+        
+        <TabsContent value="preventative" className="mt-6">
+          <PreventativeCareCalendar />
         </TabsContent>
         
         <TabsContent value="settings" className="space-y-6 mt-6">

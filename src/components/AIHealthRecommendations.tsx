@@ -1,19 +1,19 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Brain, HeartHandshake, ListChecks, Info, Star, AlertCircle, ChevronRight, MessageSquareText } from "lucide-react";
+import { Brain, HeartHandshake, ListChecks, Info, Star, AlertCircle, ChevronRight, MessageSquare, Calendar, Shield, Activity } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Progress } from "@/components/ui/progress";
+import { useToast } from "@/components/ui/use-toast";
 
-// Types for AI-generated recommendations
 interface AIRecommendation {
   id: string;
   title: string;
   description: string;
-  category: "lifestyle" | "nutrition" | "mental" | "checkup" | "specialist";
+  category: "lifestyle" | "nutrition" | "mental" | "checkup" | "specialist" | "preventative";
   urgency: "low" | "medium" | "high";
   confidence: number; // 0-100
   reasoning: string;
@@ -23,14 +23,28 @@ interface AIRecommendation {
     link?: string;
   };
   isPremiumFeature: boolean;
+  completionProgress?: number; // 0-100
+  personalizationFactors?: string[];
 }
 
 const AIHealthRecommendations = () => {
   const navigate = useNavigate();
-  const isPremium = false; // Simulated premium status
+  const { toast } = useToast();
+  const [isPremium, setIsPremium] = useState(false); // Simulated premium status
   const [activeTab, setActiveTab] = useState("all");
+  const [userProfile, setUserProfile] = useState({
+    age: 42,
+    gender: "female",
+    conditions: ["hypertension", "elevated cholesterol"],
+    medications: ["Lisinopril"],
+    familyHistory: ["diabetes", "heart disease"],
+    lastCheckups: {
+      physical: "2023-05-15",
+      dental: "2023-01-10",
+      vision: "2022-09-05"
+    }
+  });
   
-  // Simulated AI-generated recommendations
   const [recommendations, setRecommendations] = useState<AIRecommendation[]>([
     {
       id: "1",
@@ -119,10 +133,116 @@ const AIHealthRecommendations = () => {
         text: "Learn Techniques",
       },
       isPremiumFeature: true
+    },
+    {
+      id: "7",
+      title: "Preventative Screening: Mammogram",
+      description: "Based on your age and family history, annual mammogram screening is recommended.",
+      category: "preventative",
+      urgency: "high",
+      confidence: 95,
+      reasoning: "Guidelines recommend mammograms for women age 40+ annually, especially with your family history of breast cancer.",
+      action: {
+        type: "appointment",
+        text: "Schedule Mammogram",
+        link: "/calendar"
+      },
+      isPremiumFeature: false,
+      completionProgress: 0,
+      personalizationFactors: ["Age: 42", "Gender: Female", "Family history of breast cancer"]
+    },
+    {
+      id: "8",
+      title: "Heart Health Checkup",
+      description: "Your profile indicates elevated risk factors for cardiovascular disease.",
+      category: "preventative",
+      urgency: "medium",
+      confidence: 88,
+      reasoning: "Hypertension and elevated cholesterol are significant risk factors for heart disease, combined with your family history.",
+      action: {
+        type: "appointment",
+        text: "Find Cardiologist",
+        link: "/calendar"
+      },
+      isPremiumFeature: false,
+      completionProgress: 0,
+      personalizationFactors: ["Condition: Hypertension", "Condition: Elevated cholesterol", "Family history of heart disease"]
+    },
+    {
+      id: "9",
+      title: "Diabetes Screening",
+      description: "Regular A1C testing is recommended based on your risk profile.",
+      category: "preventative",
+      urgency: "medium",
+      confidence: 82,
+      reasoning: "Family history of diabetes combined with your age and cardiac risk factors suggest regular screening.",
+      action: {
+        type: "appointment",
+        text: "Schedule Lab Work",
+        link: "/calendar"
+      },
+      isPremiumFeature: false,
+      completionProgress: 0,
+      personalizationFactors: ["Family history of diabetes", "Age: 42", "BMI: 26.4"]
+    },
+    {
+      id: "10",
+      title: "Personalized Exercise Program",
+      description: "A tailored exercise regimen for hypertension management.",
+      category: "lifestyle",
+      urgency: "medium",
+      confidence: 90,
+      reasoning: "Regular physical activity is shown to reduce blood pressure and improve cardiovascular health.",
+      action: {
+        type: "education",
+        text: "View Program",
+      },
+      isPremiumFeature: true,
+      completionProgress: 30,
+      personalizationFactors: ["Condition: Hypertension", "Age: 42", "Activity level: Moderate"]
+    },
+    {
+      id: "11",
+      title: "DASH Diet Plan",
+      description: "Dietary Approaches to Stop Hypertension diet customized to your preferences.",
+      category: "nutrition",
+      urgency: "medium",
+      confidence: 88,
+      reasoning: "The DASH diet is clinically proven to help manage hypertension and cholesterol levels.",
+      action: {
+        type: "education",
+        text: "View Meal Plan",
+      },
+      isPremiumFeature: true,
+      completionProgress: 15,
+      personalizationFactors: ["Condition: Hypertension", "Condition: Elevated cholesterol", "Food preferences considered"]
+    },
+    {
+      id: "12",
+      title: "Bone Density Scan",
+      description: "Preventative scan to establish baseline bone health.",
+      category: "preventative",
+      urgency: "low",
+      confidence: 75,
+      reasoning: "Recommended for women approaching perimenopause to establish baseline measurements.",
+      action: {
+        type: "appointment",
+        text: "Learn More",
+      },
+      isPremiumFeature: false,
+      completionProgress: 0,
+      personalizationFactors: ["Age: 42", "Gender: Female"]
     }
   ]);
   
-  // Filter recommendations by tab and premium status
+  const togglePremium = () => {
+    setIsPremium(!isPremium);
+    toast({
+      title: isPremium ? "Switched to Basic Mode" : "Premium Mode Activated",
+      description: isPremium ? "Premium features are now hidden." : "You now have access to premium features.",
+    });
+  };
+  
   const getFilteredRecommendations = () => {
     const allAccessible = isPremium 
       ? recommendations 
@@ -132,7 +252,6 @@ const AIHealthRecommendations = () => {
     return allAccessible.filter(rec => rec.category === activeTab);
   };
   
-  // Sort by urgency and confidence
   const sortedRecommendations = getFilteredRecommendations().sort((a, b) => {
     const urgencyOrder = { high: 0, medium: 1, low: 2 };
     const urgencyDiff = urgencyOrder[a.urgency] - urgencyOrder[b.urgency];
@@ -141,13 +260,31 @@ const AIHealthRecommendations = () => {
     return b.confidence - a.confidence;
   });
   
-  // Handle recommendation action
   const handleAction = (recommendation: AIRecommendation) => {
     if (recommendation.action?.link) {
       navigate(recommendation.action.link);
     } else {
-      // For actions without links, we could implement different behavior
       console.log("Action taken on:", recommendation.title);
+    }
+  };
+  
+  const updateProgress = (id: string, progress: number) => {
+    setRecommendations(
+      recommendations.map(rec => 
+        rec.id === id ? { ...rec, completionProgress: progress } : rec
+      )
+    );
+    
+    if (progress === 100) {
+      toast({
+        title: "Recommendation Completed!",
+        description: "Great job taking care of your health."
+      });
+    } else {
+      toast({
+        title: "Progress Updated",
+        description: `You're ${progress}% through this recommendation.`
+      });
     }
   };
   
@@ -157,12 +294,16 @@ const AIHealthRecommendations = () => {
         <div>
           <h1 className="text-2xl md:text-3xl font-bold tracking-tight flex items-center gap-2">
             <Brain className="h-6 w-6 text-brand-500" />
-            <span>AI Health Insights</span>
+            <span>Personalized Health Insights</span>
           </h1>
           <p className="text-muted-foreground">
-            Personalized health recommendations powered by AI analysis of your health profile.
+            AI-powered preventative care recommendations based on your health profile.
           </p>
         </div>
+        
+        <Button variant="outline" size="sm" onClick={togglePremium}>
+          {isPremium ? "Disable Premium (Demo)" : "Enable Premium (Demo)"}
+        </Button>
       </div>
       
       {!isPremium && (
@@ -170,15 +311,60 @@ const AIHealthRecommendations = () => {
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>Basic Recommendations</AlertTitle>
           <AlertDescription>
-            You're seeing general recommendations. Upgrade to Premium for deeper health insights and personalized action plans.
+            You're seeing general recommendations. Upgrade to Premium for deeper preventative care insights and personalized action plans.
             <Button variant="link" className="p-0 h-auto font-semibold">Upgrade Now</Button>
           </AlertDescription>
         </Alert>
       )}
       
+      <Card className="bg-slate-50 border border-slate-200">
+        <CardHeader>
+          <CardTitle className="text-lg">Your Health Profile Summary</CardTitle>
+          <CardDescription>Recommendations are based on these factors</CardDescription>
+        </CardHeader>
+        <CardContent className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="space-y-2">
+            <div className="text-sm font-medium">Demographics</div>
+            <ul className="text-sm space-y-1">
+              <li className="flex items-center gap-2">
+                <Badge variant="outline">Age</Badge>
+                <span>{userProfile.age}</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <Badge variant="outline">Gender</Badge>
+                <span>{userProfile.gender}</span>
+              </li>
+            </ul>
+          </div>
+          
+          <div className="space-y-2">
+            <div className="text-sm font-medium">Health Conditions</div>
+            <ul className="text-sm space-y-1">
+              {userProfile.conditions.map((condition, i) => (
+                <li key={i} className="flex items-center gap-2">
+                  <Badge variant="destructive">{condition}</Badge>
+                </li>
+              ))}
+            </ul>
+          </div>
+          
+          <div className="space-y-2">
+            <div className="text-sm font-medium">Family History</div>
+            <ul className="text-sm space-y-1">
+              {userProfile.familyHistory.map((condition, i) => (
+                <li key={i} className="flex items-center gap-2">
+                  <Badge variant="secondary">{condition}</Badge>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </CardContent>
+      </Card>
+      
       <Tabs defaultValue="all" className="w-full" value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="grid grid-cols-3 md:grid-cols-6 lg:w-auto">
           <TabsTrigger value="all">All</TabsTrigger>
+          <TabsTrigger value="preventative">Preventative</TabsTrigger>
           <TabsTrigger value="checkup">Checkups</TabsTrigger>
           <TabsTrigger value="lifestyle">Lifestyle</TabsTrigger>
           <TabsTrigger value="nutrition">Nutrition</TabsTrigger>
@@ -212,10 +398,30 @@ const AIHealthRecommendations = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
+                  {recommendation.completionProgress !== undefined && (
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-sm">
+                        <span>Completion Progress</span>
+                        <span className="font-medium">{recommendation.completionProgress}%</span>
+                      </div>
+                      <Progress value={recommendation.completionProgress} className="h-2" />
+                    </div>
+                  )}
+                
                   <div className="flex items-center text-sm">
                     <Brain className="mr-1 h-4 w-4 text-muted-foreground" />
                     <span>AI Confidence: {recommendation.confidence}%</span>
                   </div>
+                  
+                  {recommendation.personalizationFactors && (
+                    <div className="flex flex-wrap gap-1">
+                      {recommendation.personalizationFactors.map((factor, i) => (
+                        <Badge key={i} variant="outline" className="text-xs bg-slate-50">
+                          {factor}
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
                   
                   <div className="bg-muted/50 p-3 rounded-md">
                     <div className="flex items-start gap-2">
@@ -237,10 +443,18 @@ const AIHealthRecommendations = () => {
                     <ChevronRight className="h-4 w-4" />
                   </Button>
                 )}
-                <Button variant="outline" className="w-full sm:w-auto">
-                  <MessageSquareText className="mr-1 h-4 w-4" />
-                  Feedback
-                </Button>
+                
+                {recommendation.completionProgress !== undefined && (
+                  <div className="flex gap-2 w-full sm:w-auto">
+                    <Button 
+                      variant="outline" 
+                      className="w-full sm:w-auto"
+                      onClick={() => updateProgress(recommendation.id, Math.min(100, (recommendation.completionProgress || 0) + 25))}
+                    >
+                      Update Progress
+                    </Button>
+                  </div>
+                )}
               </CardFooter>
             </Card>
           ))}
@@ -248,28 +462,32 @@ const AIHealthRecommendations = () => {
           {!isPremium && (
             <Card className="bg-gradient-to-br from-brand-50 to-slate-50 border border-brand-100">
               <CardHeader>
-                <CardTitle className="text-lg">Premium AI Insights</CardTitle>
+                <CardTitle className="text-lg">Premium Preventative Care</CardTitle>
                 <CardDescription>
-                  Unlock advanced health analysis and personalized action plans
+                  Unlock advanced personalized health recommendations
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2 text-sm">
                   <li className="flex items-start gap-2">
                     <Brain className="h-4 w-4 text-brand-500 mt-0.5" />
-                    <span>Advanced analysis of your health patterns</span>
+                    <span>Personalized care plans based on your complete health profile</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <HeartHandshake className="h-4 w-4 text-brand-500 mt-0.5" />
-                    <span>Genetic & family history-based insights</span>
+                    <span>Tailored recommendations for your specific conditions</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <ListChecks className="h-4 w-4 text-brand-500 mt-0.5" />
-                    <span>Personalized health optimization plans</span>
+                    <Calendar className="h-4 w-4 text-brand-500 mt-0.5" />
+                    <span>Optimized preventative care scheduling</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <Star className="h-4 w-4 text-brand-500 mt-0.5" />
-                    <span>Insurance benefit optimization</span>
+                    <Shield className="h-4 w-4 text-brand-500 mt-0.5" />
+                    <span>Early risk detection and prevention strategies</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Activity className="h-4 w-4 text-brand-500 mt-0.5" />
+                    <span>Condition-specific exercise and nutrition plans</span>
                   </li>
                 </ul>
               </CardContent>
