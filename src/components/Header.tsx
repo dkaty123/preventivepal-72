@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -13,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Calendar, Clipboard, User, Bell, Shield, Menu, Heart, LogOut, Brain, MessageSquareQuestion, ChevronDown } from "lucide-react";
+import { Calendar, Clipboard, User, Bell, Shield, Menu, Heart, LogOut, Brain, MessageSquare, ChevronDown } from "lucide-react";
 import LanguageSelector from "./LanguageSelector";
 
 const Header = () => {
@@ -77,7 +76,7 @@ const Header = () => {
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link to="/symptom-checker" className="cursor-pointer flex items-center gap-2">
-                      <MessageSquareQuestion className="h-4 w-4" />
+                      <MessageSquare className="h-4 w-4" />
                       Symptom Checker
                     </Link>
                   </DropdownMenuItem>
@@ -90,7 +89,7 @@ const Header = () => {
         <div className="flex items-center gap-2">
           {isLoggedIn ? (
             <>
-              <LanguageSelector variant="button" />
+              <LanguageSelector variant="default" />
               
               <div className="hidden md:flex gap-2">
                 <DropdownMenu>
@@ -229,7 +228,7 @@ const Header = () => {
                         to="/symptom-checker"
                         className="flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
                       >
-                        <MessageSquareQuestion className="h-4 w-4" />
+                        <MessageSquare className="h-4 w-4" />
                         Symptom Checker
                       </Link>
                       <Button 
@@ -247,7 +246,7 @@ const Header = () => {
             </>
           ) : (
             <div className="flex items-center gap-2">
-              <LanguageSelector variant="button" />
+              <LanguageSelector variant="default" />
               <Link to="/login">
                 <Button variant="outline">Login</Button>
               </Link>

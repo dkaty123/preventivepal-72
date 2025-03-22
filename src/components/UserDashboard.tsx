@@ -7,7 +7,7 @@ import { Switch } from "@/components/ui/switch";
 import ReminderCard from "./ReminderCard";
 import { 
   Bell, Calendar, Settings, PlusCircle, ListChecks, Calendar as CalendarIcon, 
-  CheckCircle, Shield, Stethoscope, Languages, Brain, MessageSquareQuestion, 
+  CheckCircle, Shield, Stethoscope, Languages, Brain, MessageSquare, 
   Activity, HeartHandshake 
 } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -15,6 +15,8 @@ import AppointmentCalendar from "./AppointmentCalendar";
 import InsuranceBenefits from "./InsuranceBenefits";
 import RecommendedCheckups from "./RecommendedCheckups";
 import LanguageSelector from "./LanguageSelector";
+import AIHealthRecommendations from "./AIHealthRecommendations";
+import SymptomChecker from "./SymptomChecker";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -224,7 +226,7 @@ const UserDashboard = () => {
             <CardHeader className="pb-2">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-lg">Symptom Checker</CardTitle>
-                <MessageSquareQuestion className="h-5 w-5 text-emerald-500" />
+                <MessageSquare className="h-5 w-5 text-emerald-500" />
               </div>
               <CardDescription>AI diagnostic assistant</CardDescription>
             </CardHeader>
@@ -462,4 +464,3 @@ const UserDashboard = () => {
 };
 
 export default UserDashboard;
-

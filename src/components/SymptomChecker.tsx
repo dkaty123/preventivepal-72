@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -57,7 +56,7 @@ const SymptomChecker = () => {
           id: "1",
           condition: "Common Cold",
           probability: 78,
-          urgency: "low",
+          urgency: "low" as const,
           description: "A viral infection causing sore throat, runny nose, and general discomfort.",
           suggestedAction: "Rest, hydration, and over-the-counter medication.",
           symptoms: ["cough", "runny nose", "sore throat", "fever"]
@@ -66,7 +65,7 @@ const SymptomChecker = () => {
           id: "2",
           condition: "Seasonal Allergies",
           probability: 65,
-          urgency: "low",
+          urgency: "low" as const,
           description: "An immune response to environmental allergens such as pollen or dust.",
           suggestedAction: "Antihistamines and avoiding triggers.",
           symptoms: ["runny nose", "sneezing", "itchy eyes", "congestion"]
@@ -75,7 +74,7 @@ const SymptomChecker = () => {
           id: "3", 
           condition: "COVID-19",
           probability: 35,
-          urgency: "medium",
+          urgency: "medium" as const,
           description: "A viral infection that can cause respiratory symptoms and other effects.",
           suggestedAction: "Consider testing and contact your doctor if symptoms worsen.",
           symptoms: ["fever", "cough", "fatigue", "loss of taste", "loss of smell"]
