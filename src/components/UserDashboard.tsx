@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
@@ -6,7 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Switch } from "@/components/ui/switch";
 import ReminderCard from "./ReminderCard";
-import { Bell, Calendar, Settings, PlusCircle, ListChecks, Calendar as CalendarIcon, CheckCircle, Shield, Stethoscope, Languages } from "lucide-react";
+import { 
+  Bell, Calendar, Settings, PlusCircle, ListChecks, Calendar as CalendarIcon, 
+  CheckCircle, Shield, Stethoscope, Languages, Brain, MessageSquareQuestion, 
+  Activity, HeartHandshake 
+} from "lucide-react";
+import { Link } from "react-router-dom";
 import AppointmentCalendar from "./AppointmentCalendar";
 import InsuranceBenefits from "./InsuranceBenefits";
 import RecommendedCheckups from "./RecommendedCheckups";
@@ -17,7 +21,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-// Define types for our reminders
 export type ReminderStatus = "upcoming" | "due" | "overdue" | "completed";
 
 interface Reminder {
@@ -30,7 +33,6 @@ interface Reminder {
 }
 
 const UserDashboard = () => {
-  // Dialog state
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [newReminder, setNewReminder] = useState<Omit<Reminder, "id">>({
     title: "",
@@ -40,10 +42,8 @@ const UserDashboard = () => {
     description: ""
   });
 
-  // Handle adding a new reminder
   const handleAddReminder = () => {
     if (!newReminder.title || !newReminder.date || !newReminder.type) {
-      // Show an error message
       return;
     }
     
@@ -58,7 +58,6 @@ const UserDashboard = () => {
     setOpenAddDialog(false);
   };
 
-  // Demo data
   const [reminders, setReminders] = useState<Reminder[]>([
     {
       id: "1",
@@ -100,7 +99,6 @@ const UserDashboard = () => {
     }
   ]);
 
-  // Function to mark a reminder as complete
   const markComplete = (id: string) => {
     setReminders(
       reminders.map(reminder => 
@@ -110,8 +108,7 @@ const UserDashboard = () => {
       )
     );
   };
-  
-  // Add a new reminder
+
   const addReminder = (reminder: Omit<Reminder, "id">) => {
     const newReminder = {
       ...reminder,
@@ -121,7 +118,6 @@ const UserDashboard = () => {
     setReminders([...reminders, newReminder]);
   };
 
-  // Filter reminders by status
   const upcomingReminders = reminders.filter(reminder => 
     reminder.status === "upcoming" || reminder.status === "due" || reminder.status === "overdue"
   );
@@ -139,16 +135,16 @@ const UserDashboard = () => {
         </div>
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" className="flex items-center gap-1" asChild>
-            <a href="#calendar">
+            <Link to="/calendar">
               <Calendar className="h-4 w-4" />
               <span>Calendar</span>
-            </a>
+            </Link>
           </Button>
           <Button variant="outline" size="sm" className="flex items-center gap-1" asChild>
-            <a href="/profile">
+            <Link to="/profile">
               <Settings className="h-4 w-4" />
               <span>Settings</span>
-            </a>
+            </Link>
           </Button>
           <LanguageSelector variant="small" />
         </div>
@@ -201,14 +197,79 @@ const UserDashboard = () => {
         </Card>
       </div>
 
+      <div>
+        <h2 className="text-xl font-semibold mb-4">AI-Powered Features</h2>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-100">
+            <CardHeader className="pb-2">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg">Health Insights</CardTitle>
+                <Brain className="h-5 w-5 text-blue-500" />
+              </div>
+              <CardDescription>AI-powered health recommendations</CardDescription>
+            </CardHeader>
+            <CardContent className="pb-2">
+              <p className="text-sm">Get personalized health recommendations based on your health profile and history.</p>
+            </CardContent>
+            <CardFooter>
+              <Button asChild className="w-full">
+                <Link to="/health-insights">
+                  View Insights
+                </Link>
+              </Button>
+            </CardFooter>
+          </Card>
+          
+          <Card className="bg-gradient-to-br from-emerald-50 to-teal-50 border-emerald-100">
+            <CardHeader className="pb-2">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg">Symptom Checker</CardTitle>
+                <MessageSquareQuestion className="h-5 w-5 text-emerald-500" />
+              </div>
+              <CardDescription>AI diagnostic assistant</CardDescription>
+            </CardHeader>
+            <CardContent className="pb-2">
+              <p className="text-sm">Describe your symptoms and get AI-powered insights about possible conditions.</p>
+            </CardContent>
+            <CardFooter>
+              <Button asChild className="w-full bg-emerald-600 hover:bg-emerald-700">
+                <Link to="/symptom-checker">
+                  Check Symptoms
+                </Link>
+              </Button>
+            </CardFooter>
+          </Card>
+          
+          <Card className="bg-gradient-to-br from-amber-50 to-orange-50 border-amber-100">
+            <CardHeader className="pb-2">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg">Appointment Optimizer</CardTitle>
+                <Activity className="h-5 w-5 text-amber-500" />
+              </div>
+              <CardDescription>Premium feature</CardDescription>
+            </CardHeader>
+            <CardContent className="pb-2">
+              <p className="text-sm">Optimize your appointments to maximize insurance benefits and minimize costs.</p>
+            </CardContent>
+            <CardFooter>
+              <Button variant="outline" className="w-full">
+                Upgrade to Premium
+              </Button>
+            </CardFooter>
+          </Card>
+        </div>
+      </div>
+
       <Tabs defaultValue="upcoming" className="w-full">
-        <TabsList className="grid grid-cols-3 md:grid-cols-5 lg:w-auto lg:grid-cols-7">
+        <TabsList className="grid grid-cols-3 md:grid-cols-5 lg:w-auto lg:grid-cols-9">
           <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
           <TabsTrigger value="completed">Completed</TabsTrigger>
           <TabsTrigger value="all">All</TabsTrigger>
           <TabsTrigger value="calendar">Calendar</TabsTrigger>
           <TabsTrigger value="benefits">Benefits</TabsTrigger>
           <TabsTrigger value="recommended">Recommended</TabsTrigger>
+          <TabsTrigger value="insights">AI Insights</TabsTrigger>
+          <TabsTrigger value="symptoms">Symptom Checker</TabsTrigger>
           <TabsTrigger value="settings">Settings</TabsTrigger>
         </TabsList>
         
@@ -337,6 +398,14 @@ const UserDashboard = () => {
           <RecommendedCheckups />
         </TabsContent>
         
+        <TabsContent value="insights" className="mt-6">
+          <AIHealthRecommendations />
+        </TabsContent>
+        
+        <TabsContent value="symptoms" className="mt-6">
+          <SymptomChecker />
+        </TabsContent>
+        
         <TabsContent value="settings" className="space-y-6 mt-6">
           <div>
             <h2 className="text-xl font-semibold mb-4">Dashboard Settings</h2>
@@ -393,3 +462,4 @@ const UserDashboard = () => {
 };
 
 export default UserDashboard;
+

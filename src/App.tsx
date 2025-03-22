@@ -12,6 +12,8 @@ import Faq from "./pages/Faq";
 import CalendarPage from "./pages/CalendarPage";
 import Benefits from "./pages/Benefits";
 import Recommended from "./pages/Recommended";
+import HealthInsights from "./pages/HealthInsights";
+import SymptomCheckerPage from "./pages/SymptomCheckerPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -29,6 +31,8 @@ const App = () => (
           <Route path="/calendar" element={<CalendarPage />} />
           <Route path="/benefits" element={<Benefits />} />
           <Route path="/recommended" element={<Recommended />} />
+          <Route path="/health-insights" element={<HealthInsights />} />
+          <Route path="/symptom-checker" element={<SymptomCheckerPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/faq" element={<Faq />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
