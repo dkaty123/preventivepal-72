@@ -1,4 +1,3 @@
-
 import React from "react";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
@@ -10,7 +9,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ChevronRight, Clock, CalendarCheck, Sparkles, Award, Check } from "lucide-react";
 import { Link } from "react-router-dom";
+import BackgroundVideoSection from "@/components/BackgroundVideoSection";
+import ScrollAnimationSection from "@/components/ScrollAnimationSection";
 
+// Existing components from the file
 const HowItWorks = () => {
   const steps = [
     {
@@ -211,7 +213,9 @@ const Index = () => {
       <main className="flex-grow">
         <Hero />
         <Stats />
+        <BackgroundVideoSection />
         <HowItWorks />
+        <ScrollAnimationSection />
         <Features />
         <TestimonialCarousel />
         <CTASection />
