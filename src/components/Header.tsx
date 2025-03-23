@@ -34,7 +34,7 @@ const Header = () => {
             <div className="px-7">
               <Link to="/" className="flex items-center">
                 <Shield className="h-6 w-6 text-brand-500" />
-                <span className="font-bold ml-2 text-xl">HealthGuard</span>
+                <span className="font-bold ml-2 text-xl">Bookd</span>
               </Link>
               <Separator className="my-4" />
             </div>
@@ -82,7 +82,7 @@ const Header = () => {
         {/* Logo */}
         <Link to="/" className="flex items-center mr-4">
           <Shield className="h-6 w-6 text-brand-500" />
-          <span className="font-bold ml-2 text-lg hidden md:inline-block">HealthGuard</span>
+          <span className="font-bold ml-2 text-lg hidden md:inline-block">Bookd</span>
         </Link>
         
         {/* Desktop Navigation */}

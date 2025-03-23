@@ -48,7 +48,7 @@ const Login = () => {
         
         toast({
           title: "Login successful",
-          description: "Welcome back to PreventivePal!",
+          description: "Welcome back to Bookd!",
         });
         navigate("/dashboard");
       } else {
@@ -85,7 +85,7 @@ const Login = () => {
         
         toast({
           title: "Registration successful",
-          description: "Welcome to PreventivePal! Your account has been created.",
+          description: "Welcome to Bookd! Your account has been created.",
         });
         navigate("/dashboard");
       } else {
@@ -102,18 +102,18 @@ const Login = () => {
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-brand-50 to-brand-100/30 p-4">
       <Link to="/" className="flex items-center gap-2 mb-8">
         <div className="h-10 w-10 rounded-full bg-brand-500 flex items-center justify-center">
-          <span className="font-bold text-white">P</span>
+          <span className="font-bold text-white">B</span>
         </div>
-        <span className="font-semibold text-2xl">PreventivePal</span>
+        <span className="font-semibold text-2xl">Bookd</span>
       </Link>
       
       <Card className="w-full max-w-md shadow-lg border-brand-200">
         <CardHeader className="space-y-1 text-center">
           <CardTitle className="text-2xl font-bold bg-gradient-to-r from-brand-600 to-brand-400 bg-clip-text text-transparent">
-            Welcome to PreventivePal
+            Welcome to Bookd
           </CardTitle>
           <CardDescription className="text-muted-foreground">
-            Login or create an account to manage your health journey
+            Login or create an account to manage your scheduling journey
           </CardDescription>
         </CardHeader>
         
@@ -291,7 +291,7 @@ const Login = () => {
       
       <div className="mt-8 text-center max-w-md">
         <p className="text-sm text-muted-foreground mb-4">
-          By using PreventivePal, you agree to our{" "}
+          By using Bookd, you agree to our{" "}
           <Link to="#" className="text-brand-600 hover:text-brand-700 font-medium">
             Terms of Service
           </Link>{" "}
@@ -304,7 +304,7 @@ const Login = () => {
         <div className="flex flex-wrap justify-center gap-2">
           <span className="px-3 py-1 bg-brand-100 text-brand-700 rounded-full text-xs font-medium">Secure login</span>
           <span className="px-3 py-1 bg-brand-100 text-brand-700 rounded-full text-xs font-medium">Data privacy</span>
-          <span className="px-3 py-1 bg-brand-100 text-brand-700 rounded-full text-xs font-medium">Personalized care</span>
+          <span className="px-3 py-1 bg-brand-100 text-brand-700 rounded-full text-xs font-medium">Personalized scheduling</span>
         </div>
       </div>
     </div>

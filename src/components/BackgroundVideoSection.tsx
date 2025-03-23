@@ -30,17 +30,17 @@ const BackgroundVideoSection = () => {
           <div className="inline-flex items-center justify-center p-1 mb-6 rounded-full bg-white/10 backdrop-blur-sm border border-white/20">
             <span className="flex items-center gap-1.5 px-4 py-1 text-sm font-medium text-white">
               <Shield className="h-4 w-4" />
-              Your health data is secure and private
+              Your booking data is secure and private
             </span>
           </div>
 
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight animate-fade-in">
-            Take control of your preventative healthcare journey
+            Take control of your appointments with ease
           </h2>
 
           <p className="text-xl text-white/80 mb-8 max-w-2xl mx-auto animate-fade-in [animation-delay:0.2s]">
-            PreventivePal helps you stay on top of your health with personalized reminders, 
-            intelligent recommendations, and seamless insurance tracking.
+            Bookd helps you stay on top of your schedule with personalized reminders, 
+            intelligent recommendations, and seamless booking management.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in [animation-delay:0.4s]">

@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { Heart } from "lucide-react";
 
@@ -10,12 +9,12 @@ const Footer = () => {
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <div className="h-8 w-8 rounded-full bg-brand-500 flex items-center justify-center">
-                <span className="font-bold text-white">P</span>
+                <span className="font-bold text-white">B</span>
               </div>
-              <span className="font-semibold text-xl">PreventivePal</span>
+              <span className="font-semibold text-xl">Bookd</span>
             </div>
             <p className="text-sm text-muted-foreground">
-              Take control of your preventative healthcare journey with personalized reminders and recommendations.
+              Take control of your scheduling journey with personalized reminders and recommendations.
             </p>
           </div>
 
@@ -45,13 +44,12 @@ const Footer = () => {
             </ul>
           </div>
         </div>
-
         <div className="mt-12 pt-8 border-t flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} PreventivePal. All rights reserved.
+            © {new Date().getFullYear()} Bookd. All rights reserved.
           </p>
           <p className="text-sm text-muted-foreground flex items-center gap-1">
-            Made with <Heart className="h-4 w-4 text-health-alert" /> for your health
+            Made with <Heart className="h-4 w-4 text-health-alert" /> for your scheduling needs
           </p>
         </div>
       </div>

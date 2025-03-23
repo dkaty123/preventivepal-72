@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { CalendarCheck, Bell, Activity, Shield, Heart, UserCheck, CheckCircle, ChevronRight, BarChart, PieChart, TrendingUp } from "lucide-react";
@@ -26,13 +25,13 @@ const Hero = () => {
             
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground">
               Your personal <span className="relative">
-                <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-brand-500 to-brand-700">health guardian</span>
+                <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-brand-500 to-brand-700">booking assistant</span>
                 <span className="absolute -bottom-2 left-0 w-full h-3 bg-brand-200 opacity-50 rounded-lg -z-0"></span>
               </span>
             </h1>
             
             <p className="text-xl text-muted-foreground max-w-[600px] leading-relaxed">
-              Never miss important check-ups again. PreventivePal reminds you of essential health screenings and helps you maximize your insurance benefits.
+              Never miss important appointments again. Bookd reminds you of essential meetings and helps you manage your schedule efficiently.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4">
@@ -54,7 +53,7 @@ const Hero = () => {
               {[
                 { icon: <CalendarCheck className="h-4 w-4" />, text: "Smart reminders" },
                 { icon: <Bell className="h-4 w-4" />, text: "Custom alerts" },
-                { icon: <Activity className="h-4 w-4" />, text: "Health insights" },
+                { icon: <Activity className="h-4 w-4" />, text: "Schedule insights" },
                 { icon: <Shield className="h-4 w-4" />, text: "Private & secure" },
                 { icon: <Heart className="h-4 w-4" />, text: "Wellness tracking" },
                 { icon: <UserCheck className="h-4 w-4" />, text: "Family accounts" }
@@ -73,7 +72,7 @@ const Hero = () => {
             {/* Interactive Dashboard Preview */}
             <div className="relative z-10 bg-white rounded-2xl shadow-xl overflow-hidden">
               <div className="bg-gradient-to-r from-brand-700 to-brand-600 p-4 text-white flex justify-between items-center">
-                <h3 className="font-medium">Health Dashboard</h3>
+                <h3 className="font-medium">Booking Dashboard</h3>
                 <div className="flex gap-2">
                   <div className="w-3 h-3 rounded-full bg-white/20"></div>
                   <div className="w-3 h-3 rounded-full bg-white/20"></div>
@@ -87,7 +86,7 @@ const Hero = () => {
                     <HoverCardTrigger asChild>
                       <div className="bg-brand-50 rounded-lg p-3 hover-lift cursor-pointer">
                         <div className="flex justify-between items-center mb-2">
-                          <h4 className="text-sm font-medium">Check-ups</h4>
+                          <h4 className="text-sm font-medium">Appointments</h4>
                           <BarChart className="h-4 w-4 text-brand-500" />
                         </div>
                         <div className="h-2 bg-brand-100 rounded-full">
@@ -98,8 +97,8 @@ const Hero = () => {
                     </HoverCardTrigger>
                     <HoverCardContent className="w-80">
                       <div className="space-y-2">
-                        <h4 className="font-medium">Your Annual Check-ups</h4>
-                        <p className="text-sm text-muted-foreground">You're doing great! Just one more check-up to complete this year.</p>
+                        <h4 className="font-medium">Your Weekly Appointments</h4>
+                        <p className="text-sm text-muted-foreground">You're doing great! Just one more appointment to complete this week.</p>
                       </div>
                     </HoverCardContent>
                   </HoverCard>
@@ -145,7 +144,7 @@ const Hero = () => {
                 
                 <img 
                   src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7?auto=format&fit=crop&q=80&w=800&h=300" 
-                  alt="Person using PreventivePal app" 
+                  alt="Person using Bookd app" 
                   className="w-full h-auto object-cover rounded-lg"
                 />
               </div>
@@ -157,30 +156,30 @@ const Hero = () => {
         </div>
         
         <div className="mt-20 text-center animate-fade-in [animation-delay:0.3s]">
-          <h2 className="text-2xl md:text-3xl font-bold mb-6">Trusted by healthcare professionals</h2>
+          <h2 className="text-2xl md:text-3xl font-bold mb-6">Trusted by professionals worldwide</h2>
           <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
             <div className="relative h-12 w-32 hover-lift">
               <div className="absolute inset-0 bg-gradient-to-r from-brand-100 to-brand-200 rounded-lg blur-sm"></div>
               <div className="relative flex items-center justify-center h-full bg-white/90 backdrop-blur-sm rounded-lg border border-brand-100 px-4 py-2">
-                <span className="font-bold text-brand-800">MediTrack</span>
+                <span className="font-bold text-brand-800">BookTrack</span>
               </div>
             </div>
             <div className="relative h-12 w-40 hover-lift">
               <div className="absolute inset-0 bg-gradient-to-r from-brand-100 to-brand-200 rounded-lg blur-sm"></div>
               <div className="relative flex items-center justify-center h-full bg-white/90 backdrop-blur-sm rounded-lg border border-brand-100 px-4 py-2">
-                <span className="font-bold text-brand-800">HealthGuard Pro</span>
+                <span className="font-bold text-brand-800">AppointPro</span>
               </div>
             </div>
             <div className="relative h-12 w-36 hover-lift">
               <div className="absolute inset-0 bg-gradient-to-r from-brand-100 to-brand-200 rounded-lg blur-sm"></div>
               <div className="relative flex items-center justify-center h-full bg-white/90 backdrop-blur-sm rounded-lg border border-brand-100 px-4 py-2">
-                <span className="font-bold text-brand-800">MediSolutions</span>
+                <span className="font-bold text-brand-800">ScheduleSolutions</span>
               </div>
             </div>
             <div className="relative h-12 w-32 hover-lift">
               <div className="absolute inset-0 bg-gradient-to-r from-brand-100 to-brand-200 rounded-lg blur-sm"></div>
               <div className="relative flex items-center justify-center h-full bg-white/90 backdrop-blur-sm rounded-lg border border-brand-100 px-4 py-2">
-                <span className="font-bold text-brand-800">WellSync</span>
+                <span className="font-bold text-brand-800">TimeSync</span>
               </div>
             </div>
           </div>
